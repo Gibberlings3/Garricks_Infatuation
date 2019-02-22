@@ -1,0 +1,100 @@
+/*
+ * @105
+ * Combined BGEE/Tutu/BGT installer
+ * written by Domi, maintained by berelinde
+ * September 25, 2014
+ * Version b20140925 by CamDawg
+*/
+
+/* Backup folder */
+BACKUP ~garrick_flirt/backup~
+
+/* Author */
+AUTHOR ~Written by Domi, maintenaned by berelinde@gmail.com~
+
+/* enable all error messages; nothing suppressed. comment this out for release version */
+//MODDER
+
+VERSION ~b20140925~
+
+/* launch the readme file immediately. */
+README ~garrick_flirt/readme-garrick_flirt.html~
+
+ALWAYS
+  ACTION_IF GAME_IS BGEE THEN BEGIN 
+    /* Tell the player it is using BGEE stuff */ 
+    PRINT @101 
+    INCLUDE ~garrick_flirt/lib/bgee_cpmvars.tpa~ 
+  END ELSE BEGIN
+    ACTION_IF FILE_EXISTS_IN_GAME ~FW0100.are~ THEN BEGIN
+      /* Tell the player it is using Tutu stuff */
+      PRINT @102
+      INCLUDE ~garrick_flirt/lib/g3_tutu_cpmvars.tpa~
+    END ELSE BEGIN
+      ACTION_IF FILE_EXISTS_IN_GAME ~AR7200.are~ THEN BEGIN
+        /* Tell the player it is using BGT stuff */
+        PRINT @103
+        INCLUDE ~garrick_flirt/lib/g3_bgt_cpmvars.tpa~
+        /* Tell the player it is not Tutu or BGT */
+        END ELSE BEGIN FAIL @104
+      END
+    END
+  END
+END
+
+AUTO_TRA ~garrick_flirt/languages/%s~
+
+LANGUAGE
+  ~English~
+  ~english~
+  ~garrick_flirt/translations/english/dialogue.tra~
+  ~garrick_flirt/translations/english/setup.tra~
+
+BEGIN @105
+
+/* STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg */
+/* adds custom IsValidForPartyDialogue state */
+APPEND ~STATE.IDS~ ~0x80101FEF CD_STATE_NOTVALID~
+             UNLESS ~CD_STATE_NOTVALID~
+
+/* Dialogue compilation */ 
+PRINT @106
+
+PRINT @107
+
+OUTER_SPRINT ~garricktimer~ @108
+OUTER_WHILE (!(IS_AN_INT ~garricktimer~) OR (~garricktimer~ > 0x5) OR (~garricktimer~ < 0x1)) BEGIN
+  PRINT @109
+  ACTION_READLN ~garricktimer~
+END
+      ACTION_IF ("garricktimer" = 1) THEN BEGIN
+//      APPEND ~gtimes.ids~ ~3600 GARRICK_TIME~
+      OUTER_SET "P#GARRICK_TIME" = 3600
+      PRINT @110
+      END
+      ACTION_IF ("garricktimer" = 2) THEN BEGIN
+//      APPEND ~gtimes.ids~ ~2700 GARRICK_TIME~
+      OUTER_SET "P#GARRICK_TIME" = 2700
+      PRINT @111
+      END
+      ACTION_IF ("garricktimer" = 3) THEN BEGIN
+//      APPEND ~gtimes.ids~ ~1800 GARRICK_TIME~
+      OUTER_SET "P#GARRICK_TIME" = 1800
+      PRINT @112
+      END
+      ACTION_IF ("garricktimer" = 4) THEN BEGIN
+//      APPEND ~gtimes.ids~ ~900 GARRICK_TIME~
+      OUTER_SET "P#GARRICK_TIME" = 900
+      PRINT @113
+      END
+      ACTION_IF ("garricktimer" = 5) THEN BEGIN
+//      APPEND ~gtimes.ids~ ~5400 GARRICK_TIME~
+      OUTER_SET "P#GARRICK_TIME" = 5400
+      PRINT @114
+      END
+
+COMPILE EVALUATE_BUFFER ~garrick_flirt/dialogue.d~
+
+/* Script compilation */
+  EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~
+      EVALUATE_BUFFER

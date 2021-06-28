@@ -99,6 +99,7 @@ LANGUAGE
 /////                                                  \\\\\
 
 BEGIN @110 DESIGNATED 0
+LABEL ~p#_garrick_infatuation_60_minutes~
 SUBCOMPONENT @105 // Garrick's Infatuation
 
 // STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
@@ -115,6 +116,7 @@ EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // 
 /////                                                  \\\\\
 
 BEGIN @111 DESIGNATED 1
+LABEL ~p#_garrick_infatuation_45_minutes~
 SUBCOMPONENT @105 // Garrick's Infatuation
 
 // STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
@@ -131,6 +133,7 @@ EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // 
 /////                                                  \\\\\
 
 BEGIN @112 DESIGNATED 2
+LABEL ~p#_garrick_infatuation_30_minutes~
 SUBCOMPONENT @105 // Garrick's Infatuation
 
 // STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
@@ -147,6 +150,7 @@ EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // 
 /////                                                  \\\\\
 
 BEGIN @113 DESIGNATED 3
+LABEL ~p#_garrick_infatuation_15_minutes~
 SUBCOMPONENT @105 // Garrick's Infatuation
 
 // STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
@@ -163,6 +167,7 @@ EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // 
 /////                                                  \\\\\
 
 BEGIN @114 DESIGNATED 4
+LABEL ~p#_garrick_infatuation_90_minutes~
 SUBCOMPONENT @105 // Garrick's Infatuation
 
 // STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 

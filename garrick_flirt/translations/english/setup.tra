@@ -1,7 +1,7 @@
 @101  = ~BGEE is detected. Beginning installation.~
 @102  = ~Tutu is detected. Beginning installation.~
 @103  = ~BGT is detected. Beginning installation.~
-@104  = ~"Garrick's Infatuation" is intended for Tutu or BGT.~
+@104  = ~"Garrick's Infatuation" is intended for Tutu, BGT, BGEE or EET.~
 @105  = ~Garrick's Infatuation~
 /* these strings no longer needed now that SUBCOMPONENT is used
 @106  = ~Select the interval between Garrick's dialogues:~

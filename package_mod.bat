@@ -6,7 +6,7 @@ call "%~dp0..\ModPackaging\utilities\ie_games.bat"
 
 REM /* MODIFY: set the values of the 3 variables below to reflect the current mod version */
 set "mod_name=Garrick's Infatuation"
-set mod_version=b0925
+set mod_version=Beta_4
 set mod_folder=garrick_flirt
 
 REM /* MODIFY: list here which IE games the mod is compatible with, from this list of possibilities: */
@@ -20,10 +20,9 @@ REM /* the tispack_folder is the root directory that contains the win32, osx, an
 REM /* the iconv_folder is where your iconv.exe utility is stored (leave alone if you are not converting charsets for BGEE) */
 REM /* the mod_readme link should point to the online readme and work fine as-is if the mod uses the standard G3 naming scheme */
 set ico_folder=%mod_folder%\style
-set audio_folder=%mod_folder%\sounds
+set audio_folder=%mod_folder%\wav
 set tispack_folder=%mod_folder%\tiz
-set tile2ee_folder=%mod_folder%\tools\tile2ee
-set iconv_folder=%mod_folder%\tra\iconv
+set iconv_folder=%mod_folder%\translations\iconv
 set mod_readme=https://gibberlings3.github.io/Documentation/readmes/readme-%mod_folder%.html
 
 REM /* MODIFY: if you don't need to build a specific package, you can disable it by setting the appropriate variable below to 0 */

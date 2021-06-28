@@ -3,6 +3,7 @@
 @103  = ~BGT is detected. Beginning installation.~
 @104  = ~"Garrick's Infatuation" is intended for Tutu or BGT.~
 @105  = ~Garrick's Infatuation~
+/* these strings no longer needed now that SUBCOMPONENT is used
 @106  = ~Select the interval between Garrick's dialogues:~
 @107  = ~Please choose one of the following:
 [1] 1 hour real time (standard) minimum between dialogues
@@ -12,8 +13,11 @@
 [5] 1 hour 30 minutes (extended) real time minimum between dialogues~
 @108  = ~placeholder_value~
 @109  = ~Please select 1, 2, 3, 4, or 5 and press enter.~
+*/
 @110  = ~Speed: 1 hour real time (standard) minimum between LoveTalks~
 @111  = ~Speed: 45 minutes real time minimum between LoveTalks~
 @112  = ~Speed: 30 minutes real time minimum between LoveTalks~
 @113  = ~Speed: 15 minutes real time minimum between LoveTalks~
 @114  = ~Speed: 1 hour 30 minutes (extended) real time minimum between LoveTalks~
+@115  = ~EET is detected. Beginning installation.~
+@116  = ~DLC Merger is required before mods can be installed on this game. Check the readme for more information and a link to download DLC Merger.~

@@ -10,36 +10,72 @@
 BACKUP ~garrick_flirt/backup~
 
 /* Author */
-AUTHOR ~Written by Domi, maintenaned by berelinde@gmail.com~
+SUPPORT ~https://www.gibberlings3.net/forum/180-garricks-infatuation/~
 
 /* enable all error messages; nothing suppressed. comment this out for release version */
 //MODDER
 
-VERSION ~b20140925~
+VERSION ~Beta 4~
 
 /* launch the readme file immediately. */
 README ~garrick_flirt/readme-garrick_flirt.html~
 
 ALWAYS
-  ACTION_IF GAME_IS BGEE THEN BEGIN 
-    /* Tell the player it is using BGEE stuff */ 
-    PRINT @101 
-    INCLUDE ~garrick_flirt/lib/bgee_cpmvars.tpa~ 
-  END ELSE BEGIN
-    ACTION_IF FILE_EXISTS_IN_GAME ~FW0100.are~ THEN BEGIN
-      /* Tell the player it is using Tutu stuff */
-      PRINT @102
-      INCLUDE ~garrick_flirt/lib/g3_tutu_cpmvars.tpa~
+
+  ACTION_IF NOT VARIABLE_IS_SET firebeadstate1 THEN BEGIN
+  
+    ACTION_IF ((FILE_EXISTS ~dlc/sod-dlc.zip~) OR (FILE_EXISTS ~sod-dlc.zip~)) THEN BEGIN FAIL @116 END // DLC Merger check
+
+    ACTION_IF GAME_IS ~bgee~ THEN BEGIN
+
+      PRINT @101 
+      INCLUDE ~garrick_flirt/lib/bgee_cpmvars.tpa~ 
+
     END ELSE BEGIN
-      ACTION_IF FILE_EXISTS_IN_GAME ~AR7200.are~ THEN BEGIN
-        /* Tell the player it is using BGT stuff */
-        PRINT @103
-        INCLUDE ~garrick_flirt/lib/g3_bgt_cpmvars.tpa~
-        /* Tell the player it is not Tutu or BGT */
-        END ELSE BEGIN FAIL @104
+
+      ACTION_IF GAME_IS ~eet~ THEN BEGIN
+
+        PRINT @115
+        INCLUDE ~eet/other/cpmvars/eet_cpmvars.tpa~
+
+      END ELSE BEGIN
+
+        ACTION_IF GAME_IS ~tutu tutu_totsc~ THEN BEGIN
+
+          PRINT @102
+          INCLUDE ~garrick_flirt/lib/g3_tutu_cpmvars.tpa~
+
+        END ELSE BEGIN
+
+          ACTION_IF GAME_IS ~bgt~ THEN BEGIN
+    
+            PRINT @103
+            INCLUDE ~garrick_flirt/lib/g3_bgt_cpmvars.tpa~
+            
+          END ELSE BEGIN
+    
+            FAIL @104
+
+          END
+
+        END
+
       END
+
     END
+
+    ACTION_IF GAME_IS ~bgee eet~ THEN BEGIN
+
+      ACTION_DEFINE_ARRAY cdreload BEGIN dialogue END // convert strings to UTF-8 for BGEE/EET
+      ACTION_DEFINE_ARRAY cdnoconvert BEGIN setup END // ee.tra is already in utf-8
+      LAF HANDLE_CHARSETS INT_VAR infer_charset = 1 STR_VAR tra_path = ~garrick_flirt/translations~ reload_array = cdreload noconvert_array = cdnoconvert END
+      
+      LOAD_TRA ~thecalling/languages/%LANGUAGE%/ee.tra~
+
+    END
+
   END
+  
 END
 
 AUTO_TRA ~garrick_flirt/languages/%s~
@@ -50,51 +86,90 @@ LANGUAGE
   ~garrick_flirt/translations/english/dialogue.tra~
   ~garrick_flirt/translations/english/setup.tra~
 
-BEGIN @105
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////                                                  \\\\\
+///// Garrick's Infatuation                            \\\\\
+/////                                                  \\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
 
-/* STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg */
-/* adds custom IsValidForPartyDialogue state */
-APPEND ~STATE.IDS~ ~0x80101FEF CD_STATE_NOTVALID~
-             UNLESS ~CD_STATE_NOTVALID~
+/////                                                  \\\\\
+///// lt timer: one hour                               \\\\\
+/////                                                  \\\\\
 
-/* Dialogue compilation */ 
-PRINT @106
+BEGIN @110 DESIGNATED 0
+SUBCOMPONENT @105 // Garrick's Infatuation
 
-PRINT @107
+// STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
+APPEND ~STATE.IDS~ ~0x80101FEF CD_STATE_NOTVALID~ UNLESS ~CD_STATE_NOTVALID~
 
-OUTER_SPRINT ~garricktimer~ @108
-OUTER_WHILE (!(IS_AN_INT ~garricktimer~) OR (~garricktimer~ > 0x5) OR (~garricktimer~ < 0x1)) BEGIN
-  PRINT @109
-  ACTION_READLN ~garricktimer~
-END
-      ACTION_IF ("garricktimer" = 1) THEN BEGIN
-//      APPEND ~gtimes.ids~ ~3600 GARRICK_TIME~
-      OUTER_SET "P#GARRICK_TIME" = 3600
-      PRINT @110
-      END
-      ACTION_IF ("garricktimer" = 2) THEN BEGIN
-//      APPEND ~gtimes.ids~ ~2700 GARRICK_TIME~
-      OUTER_SET "P#GARRICK_TIME" = 2700
-      PRINT @111
-      END
-      ACTION_IF ("garricktimer" = 3) THEN BEGIN
-//      APPEND ~gtimes.ids~ ~1800 GARRICK_TIME~
-      OUTER_SET "P#GARRICK_TIME" = 1800
-      PRINT @112
-      END
-      ACTION_IF ("garricktimer" = 4) THEN BEGIN
-//      APPEND ~gtimes.ids~ ~900 GARRICK_TIME~
-      OUTER_SET "P#GARRICK_TIME" = 900
-      PRINT @113
-      END
-      ACTION_IF ("garricktimer" = 5) THEN BEGIN
-//      APPEND ~gtimes.ids~ ~5400 GARRICK_TIME~
-      OUTER_SET "P#GARRICK_TIME" = 5400
-      PRINT @114
-      END
+OUTER_SET "P#GARRICK_TIME" = 3600
 
-COMPILE EVALUATE_BUFFER ~garrick_flirt/dialogue.d~
+COMPILE EVALUATE_BUFFER ~garrick_flirt/dialogue.d~ // compile dialogue
 
-/* Script compilation */
-  EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~
-      EVALUATE_BUFFER
+EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // Script compilation
+
+/////                                                  \\\\\
+///// lt timer: 45 minutes                             \\\\\
+/////                                                  \\\\\
+
+BEGIN @111 DESIGNATED 1
+SUBCOMPONENT @105 // Garrick's Infatuation
+
+// STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
+APPEND ~STATE.IDS~ ~0x80101FEF CD_STATE_NOTVALID~ UNLESS ~CD_STATE_NOTVALID~
+
+OUTER_SET "P#GARRICK_TIME" = 2700
+
+COMPILE EVALUATE_BUFFER ~garrick_flirt/dialogue.d~ // compile dialogue
+
+EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // Script compilation
+
+/////                                                  \\\\\
+///// lt timer: 30 minutes                             \\\\\
+/////                                                  \\\\\
+
+BEGIN @112 DESIGNATED 2
+SUBCOMPONENT @105 // Garrick's Infatuation
+
+// STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
+APPEND ~STATE.IDS~ ~0x80101FEF CD_STATE_NOTVALID~ UNLESS ~CD_STATE_NOTVALID~
+
+OUTER_SET "P#GARRICK_TIME" = 1800
+
+COMPILE EVALUATE_BUFFER ~garrick_flirt/dialogue.d~ // compile dialogue
+
+EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // Script compilation
+
+/////                                                  \\\\\
+///// lt timer: 15 minutes                             \\\\\
+/////                                                  \\\\\
+
+BEGIN @113 DESIGNATED 3
+SUBCOMPONENT @105 // Garrick's Infatuation
+
+// STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
+APPEND ~STATE.IDS~ ~0x80101FEF CD_STATE_NOTVALID~ UNLESS ~CD_STATE_NOTVALID~
+
+OUTER_SET "P#GARRICK_TIME" = 900
+
+COMPILE EVALUATE_BUFFER ~garrick_flirt/dialogue.d~ // compile dialogue
+
+EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // Script compilation
+
+/////                                                  \\\\\
+///// lt timer: 90 minutes                             \\\\\
+/////                                                  \\\\\
+
+BEGIN @114 DESIGNATED 4
+SUBCOMPONENT @105 // Garrick's Infatuation
+
+// STATE.IDS patching - borrowed from BG1 NPC Project and CamDawg - adds custom IsValidForPartyDialogue state 
+APPEND ~STATE.IDS~ ~0x80101FEF CD_STATE_NOTVALID~ UNLESS ~CD_STATE_NOTVALID~
+
+OUTER_SET "P#GARRICK_TIME" = 5400
+
+COMPILE EVALUATE_BUFFER ~garrick_flirt/dialogue.d~ // compile dialogue
+
+EXTEND_BOTTOM ~%GARRICK_BCS%.bcs~ ~garrick_flirt/script.baf~ EVALUATE_BUFFER // Script compilation
